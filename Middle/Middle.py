@@ -7,7 +7,7 @@ import os
 from Mongo_Proc import Mongo_Proc
 from Mid_Filter import Filter
 from libs.Configuration import Configuration
-from Syslog import ProLogger
+from Syslog import SysLogger
 
 from optparse import OptionParser
 
