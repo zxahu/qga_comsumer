@@ -5,7 +5,7 @@ from Middle.Mongo_Proc import Mongo_Proc
 from libs.Configuration import Configuration
 from optparse import OptionParser
 from multiprocessing import Process
-
+from Middle.Syslog import SysLogger
 
 def create_instance():
     middle = Middle(CFG.getSection('Middle'))
@@ -19,7 +19,10 @@ parser.add_option("-f", "--conf",
 
 CFG = Configuration(options.conf)
 
+logger = SysLogger.getLogger()
+
 if __name__ == '__main__':
    # for i in range(10):
+    logger.info("starting qga consumer...")
     proc = Process(target=create_instance)
     proc.start()

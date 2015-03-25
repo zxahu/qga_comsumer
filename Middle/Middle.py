@@ -7,6 +7,8 @@ import os
 from Mongo_Proc import Mongo_Proc
 from Mid_Filter import Filter
 from libs.Configuration import Configuration
+from Syslog import ProLogger
+
 from optparse import OptionParser
 
 parser = OptionParser()
@@ -28,6 +30,7 @@ class Middle(object):
 
     def __init__(self,cfg):
         keys = cfg.keys()
+
         if 'mq_host' in keys:
             self.MQ_HOST = cfg['mq_host']
         if 'queue_name' in keys:
