@@ -5,7 +5,7 @@ from Middle.Mongo_Proc import Mongo_Proc
 from libs.Configuration import Configuration
 from optparse import OptionParser
 from multiprocessing import Process
-from Middle.SyLog import SysLogger
+from Middle.SysLog import SysLogger
 
 def create_instance():
     middle = Middle(CFG.getSection('Middle'))
