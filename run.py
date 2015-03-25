@@ -19,7 +19,7 @@ parser.add_option("-f", "--conf",
 
 CFG = Configuration(options.conf)
 
-logger = SysLogger.getLogger()
+logger = SysLogger().logger
 
 if __name__ == '__main__':
    # for i in range(10):
