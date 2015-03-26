@@ -16,6 +16,7 @@ class Filter(object):
     email_queue = None
 
     def __init__(self,host):
+        self.get_filter()
         self.MQ_Host = host
         self.email_queue = Email(self.MQ_Host)
 
@@ -25,7 +26,8 @@ class Filter(object):
     def get_filter(self):
         filters_name = CFG.getSection(Filters)
         filters = filters_name['filters']
-        print filters, type(filters)
+        logger.info(filters)
+        logger.info(type(filters))
 
 
      
