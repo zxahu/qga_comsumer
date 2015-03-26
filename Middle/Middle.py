@@ -6,10 +6,8 @@ import datetime
 import os
 from Mongo_Proc import Mongo_Proc
 from Mid_Filter import Filter
-from Syslog import SysLogger
+from SysLog import SysLogger
 from Conf_Parser import Conf_Paser
-
-from optparse import OptionParser
 
 CFG = Conf_Paser().cfg
 logger = SysLogger().logger
