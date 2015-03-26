@@ -24,7 +24,6 @@ class Middle(object):
 
     def __init__(self,cfg):
         keys = cfg.keys()
-
         if 'mq_host' in keys:
             self.MQ_HOST = cfg['mq_host']
         if 'queue_name' in keys:

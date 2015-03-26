@@ -4,7 +4,7 @@ import sys
 
 class Email(object):
 
-    MQ_Host = '10.239.21.48'
+    MQ_Host = '127.0.0.1'
     connection = None
     channel = None
 

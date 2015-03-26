@@ -2,6 +2,9 @@
 import pymongo
 import json
 from pymongo import MongoClient
+from SysLog import SysLogger
+
+logger = SysLogger().logger
 
 class Mongo_Proc(object):
 
@@ -29,7 +32,9 @@ class Mongo_Proc(object):
             self.client = MongoClient(self.DB_HOST,self.DB_PORT)
             self.db = self.client[self.DB_NAME]
             self.collection = self.db[self.COLLECTION_NAME]
+            logger.info("connect to mongodb success")
         except :
+            logger.info("connect to mongodb failed")
             raise Exception("connect to mongodb failed")
 
     """this function help save data to mongodb,a tuple save data and save to mongo when length>2"""

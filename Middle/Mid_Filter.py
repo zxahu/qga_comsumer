@@ -4,10 +4,14 @@ import sys
 import ast
 from libs.Configuration import Configuration
 from Worker.Email import Email
+from SysLog import SysLogger
+from Conf_Parser import Conf_Paser
 
+CFG = Conf_Paser().cfg
+logger = SysLogger().logger
 class Filter(object):
 
-    MQ_Host = '10.239.21.48'
+    MQ_Host = '127.0.0.1'
     Filters = ['email',]
     email_queue = None
 
@@ -18,6 +22,10 @@ class Filter(object):
     def filt(self,data):
         self.email_queue.filt(data)
 
+    def get_filter(self):
+        filters_name = CFG.getSection(Filters)
+        filters = filters_name['filters']
+        print filters, type(filters)
 
 
      
