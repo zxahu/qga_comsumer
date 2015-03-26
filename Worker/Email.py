@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 import pika
 import sys
-from SysLog import SysLogger
+from Middle.SysLog import SysLogger
+
 logger = SysLogger().logger
 
 class Email(object):
