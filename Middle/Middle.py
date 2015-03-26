@@ -37,8 +37,6 @@ class Middle(object):
             self.connection.close()
 
     def callback(self,ch, method, properties, body):
-        logger.info(body)
-        logger.info(type(body))
         message = body
         self.db.save(message)
         self.strainer.filt(body)
