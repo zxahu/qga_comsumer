@@ -1,24 +1,18 @@
+__author__ = 'zhang11'
+
 import os
 from Middle.Middle import Middle
 from Middle.Mid_Filter import Filter
 from Middle.Mongo_Proc import Mongo_Proc
-from libs.Configuration import Configuration
-from optparse import OptionParser
 from multiprocessing import Process
 from Middle.SysLog import SysLogger
+from Middle.Conf_Parser import Conf_Paser
+
 
 def create_instance():
     middle = Middle(CFG.getSection('Middle'))
 
-parser = OptionParser()
-parser.add_option("-f", "--conf",
-                  dest="conf", default="etc/qga_consumer.conf",
-                  help="Configuration file")
-
-(options, args) = parser.parse_args()
-
-CFG = Configuration(options.conf)
-
+CFG = Conf_Paser().cfg
 logger = SysLogger().logger
 
 if __name__ == '__main__':

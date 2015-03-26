@@ -6,17 +6,13 @@ import datetime
 import os
 from Mongo_Proc import Mongo_Proc
 from Mid_Filter import Filter
-from libs.Configuration import Configuration
-from SysLog import SysLogger
+from Syslog import SysLogger
+from Conf_Parser import Conf_Paser
 
 from optparse import OptionParser
 
-parser = OptionParser()
-parser.add_option("-f", "--conf",
-                  dest="conf", default="etc/qga_consumer.conf",
-                  help="Configuration file")
-(options, args) = parser.parse_args()
-CFG = Configuration(options.conf)
+CFG = Conf_Paser().cfg
+logger = SysLogger().logger
 
 class Middle(object):
 
