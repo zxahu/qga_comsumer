@@ -2,6 +2,8 @@
 import pika
 import sys
 
+logger = SysLogger().logger
+
 class Email(object):
 
     MQ_Host = '127.0.0.1'
@@ -21,7 +23,6 @@ class Email(object):
 
     def filt(self,data):
         try :
-            #if data[0] =='4':
             self.requeue(self.QUEUE_NAME,data[1:])
         except :
             raise Exception("filt message failed")
@@ -33,10 +34,12 @@ class Email(object):
             self.channel = self.connection.channel()
             self.channel.queue_declare(queue=self.QUEUE_NAME,durable=True)
         except:
+            logger.error("filter connect to rabbitmq failed")
             raise Exception("filter connect to rabbitmq failed")
 
     def requeue(self,queue_name,message):
         try:
             self.channel.basic_publish(exchange='', routing_key=queue_name,body=message, properties=pika.BasicProperties(delivery_mode=2,))
         except:
+            logger.error("after filt,send message to rabbitmq failed")
             raise Exception("after filt,send message to rabbitmq failed")

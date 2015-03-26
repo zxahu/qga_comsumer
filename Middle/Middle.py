@@ -37,6 +37,8 @@ class Middle(object):
             self.connection.close()
 
     def callback(self,ch, method, properties, body):
+        logger.info(body)
+        logger.info(type(body))
         message = body
         self.db.save(message)
         self.strainer.filt(body)
@@ -45,6 +47,7 @@ class Middle(object):
         try :
             self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=self.MQ_HOST))
         except :
+            logger.error("connect to rabbitmq failed")
             raise Exception("connect to rabbitmq failed")
         try :
             channel = self.connection.channel()
@@ -54,9 +57,7 @@ class Middle(object):
             channel.basic_consume(self.callback,queue=self.QUEUE_NAME,no_ack=True)
             channel.start_consuming()
         except :
-            raise Exception("init comsuming failed")
+            logger.error("init rabbitmq comsuming failed")
+            raise Exception("init rabbitmq comsuming failed")
 
-if __name__ == '__main__':
-    
-    mid = Middle() 
   

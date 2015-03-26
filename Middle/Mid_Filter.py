@@ -12,22 +12,24 @@ logger = SysLogger().logger
 class Filter(object):
 
     MQ_Host = '127.0.0.1'
-    Filters = ['email',]
+    #Filters = ['email',]   useless maybe
     email_queue = None
 
     def __init__(self,host):
-        self.get_filter()
         self.MQ_Host = host
-        self.email_queue = Email(self.MQ_Host)
+        self.get_filters()
 
     def filt(self,data):
         self.email_queue.filt(data)
 
-    def get_filter(self):
-        filters_name = CFG.getSection(Filters)
+    def get_filters(self):
+        filters_name = CFG.getSection('Filters')
         filters = filters_name['filters']
-        logger.info(filters)
-        logger.info(type(filters))
+        if 'email'in filters:
+            self.email_queue = Email(self.MQ_Host)
+        if 'ha' in filters:
+            # used to life migration
+            pass
 
 
      
