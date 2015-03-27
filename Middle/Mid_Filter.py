@@ -9,10 +9,10 @@ from Conf_Parser import Conf_Paser
 
 CFG = Conf_Paser().cfg
 logger = SysLogger().logger
+
 class Filter(object):
 
     MQ_Host = '127.0.0.1'
-    #Filters = ['email',]   useless maybe
     email_queue = None
 
     def __init__(self,host):

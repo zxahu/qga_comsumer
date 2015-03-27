@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import pika
 import sys
+import re
 from Middle.SysLog import SysLogger
 
 logger = SysLogger().logger
@@ -12,7 +13,8 @@ class Email(object):
     channel = None
 
     QUEUE_NAME = 'email'
-
+    p_email = re.compile(r'\"priority\"\s\:\s\d{2}')
+    p_level = re.compile(r'\d{2}')
 
     def __init__(self,host):
         self.MQ_Host = host
@@ -23,14 +25,17 @@ class Email(object):
             self.connection.close()
 
     def filt(self,data):
+        priority = self.p_email.findall(data)
+        level = self.p_level.findall(priority)
         try :
-            self.requeue(self.QUEUE_NAME,data[1:])
+            if level != '20':
+                self.requeue(self.QUEUE_NAME,data)
         except :
             raise Exception("filt message failed")
 
     def connect(self,queue_name):
         try:
-            self.connection = pika.BlockingConnection(pika.ConnectionParameters(
+            self.connection = pikqa.BlockingConnection(pika.ConnectionParameters(
                         host=self.MQ_Host))
             self.channel = self.connection.channel()
             self.channel.queue_declare(queue=self.QUEUE_NAME,durable=True)

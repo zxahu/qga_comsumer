@@ -34,7 +34,7 @@ class Mongo_Proc(object):
             self.collection = self.db[self.COLLECTION_NAME]
             logger.info("connect to mongodb success")
         except :
-            logger.info("connect to mongodb failed")
+            logger.error("connect to mongodb failed")
             raise Exception("connect to mongodb failed")
 
     """this function help save data to mongodb,a tuple save data and save to mongo when length>2"""
