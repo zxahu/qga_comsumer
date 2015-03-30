@@ -13,8 +13,6 @@ class Email(object):
     channel = None
 
     QUEUE_NAME = 'email'
-    p_email = re.compile(r'\"priority\"\s\:\s\d{2}')
-    p_level = re.compile(r'\d{2}')
 
     def __init__(self,host):
         self.MQ_Host = host
@@ -25,8 +23,8 @@ class Email(object):
             self.connection.close()
 
     def filt(self,data):
-        priority = self.p_email.findall(data)
-        level = self.p_level.findall(priority)
+        logger.info("email data:"+data)
+ #       level = data['priority']
         try :
             if level != '20':
                 self.requeue(self.QUEUE_NAME,data)
@@ -35,7 +33,7 @@ class Email(object):
 
     def connect(self,queue_name):
         try:
-            self.connection = pikqa.BlockingConnection(pika.ConnectionParameters(
+            self.connection = pika.BlockingConnection(pika.ConnectionParameters(
                         host=self.MQ_Host))
             self.channel = self.connection.channel()
             self.channel.queue_declare(queue=self.QUEUE_NAME,durable=True)
