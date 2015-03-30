@@ -37,9 +37,12 @@ class Middle(object):
             self.connection.close()
 
     def callback(self,ch, method, properties, body):
-        message = body
+        try:
+            message = json.loads(body)
+        except:
+            logger.error("convert message failed")
         self.db.save(message)
-        self.strainer.filt(body)
+        self.strainer.filt(message)
 
     def receive_init(self):
         try :
