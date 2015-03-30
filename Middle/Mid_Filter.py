@@ -16,6 +16,7 @@ class Filter(object):
 
     MQ_Host = '127.0.0.1'
     email_queue = None
+    net = None
     filters_name = CFG.getSection('Filters')
 
     def __init__(self,host):
@@ -23,7 +24,7 @@ class Filter(object):
         self.get_filters()
 
     def filt(self,data):
-        pass
+        self.net.filt(data)
         #self.email_queue.filt(data)
 
     def get_filters(self):

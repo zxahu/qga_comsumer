@@ -13,10 +13,13 @@ class Handler(object):
     QUEUE_NAME = None
     connection = None
     channel = None
+    hosts = None
 
     def __init__(self):
         config=CFG.getSection('Middle')
         self.MQ_Host = config['MQ_HOST']
+        mon=CFG.getSection('Filters')['Hosts']
+        self.addmon(mon)
 
     def __del__(self):
         pass
@@ -26,6 +29,14 @@ class Handler(object):
 
     def solve(self):
         pass
+
+    def addmon(self,mon):
+        try:
+            list = mon.split(',')
+            for host in list :
+                self.hosts[host]='OK'
+        except:
+            raise Exception("wrong configuration, use , to split hosts")
 
     def connect(self):
         try:
