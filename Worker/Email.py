@@ -26,7 +26,7 @@ class Email(object):
         logger.info("email data:"+data)
  #       level = data['priority']
         try :
-            if level != '20':
+            if level == '20':
                 self.requeue(self.QUEUE_NAME,data)
         except :
             raise Exception("filt message failed")

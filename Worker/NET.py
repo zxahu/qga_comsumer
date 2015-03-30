@@ -13,7 +13,8 @@ class Net(Handler):
     broken = None
     p_id = re.compile(r'instance-\d{7}')
 
-    def __init__(self,):
+    def __init__(self):
+        logger.info("hahaha")
         self.QUEUE_NAME = "Net_Recovery"
         self.connect(self.QUEUE_NAME)
 

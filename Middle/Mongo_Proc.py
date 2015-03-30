@@ -43,7 +43,6 @@ class Mongo_Proc(object):
         if len(self.data_list) > 32:
             try:
                 for data in self.data_list:
-                    message = json.loads(data)
                     self.message_list.append(message)
                 self.collection.insert(self.message_list)
                 self.data_list = []
