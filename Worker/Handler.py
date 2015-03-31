@@ -13,7 +13,7 @@ class Handler(object):
     QUEUE_NAME = None
     connection = None
     channel = None
-    hosts = None
+    hosts = {} 
 
     def __init__(self):
         config=CFG.getSection('Middle')
@@ -38,11 +38,11 @@ class Handler(object):
         except:
             raise Exception("wrong configuration, use , to split hosts")
 
-    def connect(self):
+    def connect(self,QUEUE):
         try:
             self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=self.MQ_Host))
             self.channel = self.connection.channel()
-            self.channel.queue_declare(queue=self.QUEUE_NAME,durable=True)
+            self.channel.queue_declare(queue=QUEUE,durable=True)
         except:
             logger.error("connect to rabbitmq failed")
             raise Exception("connect to rabbitmq failed")

@@ -37,7 +37,8 @@ class Filter(object):
                 # used to life migration
                 pass
             if 'net' in filters:
-                net = eval('NET.Net') 
+                self.net = eval('NET.Net')()
+                logger.info(self.net.QUEUE_NAME) 
         except:
             raise Exception("get filters failed")
 

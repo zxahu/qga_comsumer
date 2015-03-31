@@ -4,14 +4,15 @@ from Handler import Handler
 from Middle.Conf_Parser import Conf_Paser
 from Middle.SysLog import SysLogger
 import re
+import json
 
 logger = SysLogger().logger
 CFG = Conf_Paser().cfg
 
+broken = {}
 class Net(Handler):
 
     trigger = 3
-    broken = None
 
     def __init__(self):
         self.QUEUE_NAME = "Net_Recovery"
@@ -19,32 +20,30 @@ class Net(Handler):
 
 
     def analysis(self,message):
+        global broken
         name = message['host']
-        if name in message.keys:
-            self.broken[name] = self.broken[name]+1
+        if name in broken:
+            broken[name] = broken[name]+1
         else:
-            self.broken[name] =1
+            broken[name] =1
             self.hosts[name]='ERROR'
-        if self.broken[name] > self.trigger :
-            self.solve(message)
-            self.broken[name] = 0
+        if broken[name] > self.trigger :
+            self.solve(name,message['message'])
+            broken[name] = 0
             self.hosts[name] = 'OK'
 
-    def solve(self,message):
-        logger.error(message)
+    def solve(self,host,message):
         content ={
-            "host" : message['host'],
+            "host" : host,
             "type" : "Net",
-            "message":message['message'],
-            "vm":name
+            "message":message,
         }
-        logger.info(content)
-        self.requeue(self.QUEUE_NAME,content)
+        str_content = json.dumps(content) 
+        self.requeue(self.QUEUE_NAME,str_content)
 
     def filt(self,message):
-        if message['Priority'] == 20:
+        if message['priority'] != 10:
             self.analysis(message)
-
 
 
 

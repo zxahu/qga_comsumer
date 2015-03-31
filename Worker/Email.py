@@ -23,7 +23,6 @@ class Email(object):
             self.connection.close()
 
     def filt(self,data):
-        logger.info("email data:"+data)
  #       level = data['priority']
         try :
             if level == '20':
