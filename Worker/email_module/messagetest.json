@@ -1,0 +1,26 @@
+{
+  "Subject" :"iLab Test Execution Report 测试报告",
+  "template":"iLab_Default.html",
+  "image":"iLab.png",
+  "sender": "lina",
+  "receiver":"xin1.x.zhang@intel.com",
+  "Data" : {
+    "title" : "iLab Test Execution Report",
+    "Project" : "iLab",
+    "Configuration":"Default",
+    "TestAssemblies":"iLab.Tests.dll",
+    "StartTime":"1/28/2015 12:08:44 AM",
+    "Duration":"00:12:08.1965191",
+    "TestThreads":"1",
+    "SuccessNumber":"7",
+    "FailNumber":"2",
+    "Successrate":"71",
+    "testexecutions":"11",
+    "Tests":"7",
+    "Succeeded":"5",
+    "Failed":"2",
+    "Pending":"0",
+    "Ignored":"0",
+    "Skipped":"0"
+  } 
+}

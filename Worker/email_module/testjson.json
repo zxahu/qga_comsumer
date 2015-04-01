@@ -1,0 +1,13 @@
+{
+  "Subject": "iLab测试模板",
+  "content":"weclome!",
+  "template":"test.html",
+  "Data" : {
+    "GradeSchool" :  "Primary School of Washington",
+    "TRACEINFO" : [
+        {"content":"test", "date":"tt"},
+        {"content":"cc", "date":"aa"}
+    ] ,
+    "University":  "Harvard University"  
+                }
+}

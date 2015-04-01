@@ -1,0 +1,15 @@
+<html>
+   <head>
+      <title>{{title}}</title>
+   </head>
+   <body>
+      <img alt="" src="cid:image1" />
+      <p>{{content}}</p>
+      <p>{{template}}</p>
+
+        {% for item in TRACEINFO %}
+            <p style='margin:0in;font-family:Calibri;font-size:14pt' lang=en-US>
+                {{item.date}}++++++++++{{item.content}}</p>
+        {% endfor %} 
+   </body>
+</html>

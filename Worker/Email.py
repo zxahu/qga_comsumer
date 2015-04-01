@@ -3,46 +3,81 @@ import pika
 import sys
 import re
 from Middle.SysLog import SysLogger
+from Middle.Conf_Parser import Conf_Paser
+from email_module.rpcclient import RPC_Mail
 
 logger = SysLogger().logger
+CFG = Conf_Paser().cfg
 
 class Email(object):
 
-    MQ_Host = '127.0.0.1'
-    connection = None
-    channel = None
+    contact_info = None
+    mail = None
 
-    QUEUE_NAME = 'email'
+    def __init__(self):
+        self.contact_info = CFG.getSection("Email")
+        if 'email_receiver' in self.contact_info.keys():
+            self.receiver  = self.contact_info['email_receiver']
+        else:
+            self.receiver = "EC OpenStack"
 
-    def __init__(self,host):
-        self.MQ_Host = host
-        self.connect(self.QUEUE_NAME)
+        if 'email_server' in self.contact_info.keys():
+            email_server = "http://"+self.contact_info['email_server']
+        else:
+            email_server = "http://10.239.21.164"
+
+        self.sender = "VM_Monitor"
+        self.mail = RPC_Mail(email_server)
 
     def __del__(self): 
-        if self.connection is not None:
-            self.connection.close()
+        pass
 
     def filt(self,data):
- #       level = data['priority']
-        try :
-            if level == '20':
-                self.requeue(self.QUEUE_NAME,data)
-        except :
-            raise Exception("filt message failed")
+        if data['priority'] != 10:
+            self.send_mail(data)
 
-    def connect(self,queue_name):
-        try:
-            self.connection = pika.BlockingConnection(pika.ConnectionParameters(
-                        host=self.MQ_Host))
-            self.channel = self.connection.channel()
-            self.channel.queue_declare(queue=self.QUEUE_NAME,durable=True)
-        except:
-            logger.error("filter connect to rabbitmq failed")
-            raise Exception("filter connect to rabbitmq failed")
+    def build_json(self,message):
+        content = {}
+        mail_content ={}
+        if 'host' in message:
+            host = message['host']
+        else:
+            host = 'unknown'
 
-    def requeue(self,queue_name,message):
-        try:
-            self.channel.basic_publish(exchange='', routing_key=queue_name,body=message, properties=pika.BasicProperties(delivery_mode=2,))
-        except:
-            logger.error("after filt,send message to rabbitmq failed")
-            raise Exception("after filt,send message to rabbitmq failed")
+        if 'timestamp' in message:
+            time = message['timestamp']
+        else:
+            time = 'unknown'
+
+        if 'message' in message:
+            try:
+                problem_type = message['message']['action']
+                Data = message['message']['content']
+            except:
+                problem_type = 'unknown'
+        else:
+            problem_type = 'unknown'
+            Data = 'unknown'
+
+        subject = "OpenStack "+problem_type+"Problem"
+
+        content['host'] = host
+        content['title'] = subject
+        content['time'] =time
+        content['Data'] =Data
+
+        mail_content['sender']  = self.sender
+        mail_content['reciever'] = self.receiver
+        mail_content['template'] ="iLab_Default.html"
+        mail_content['image'] ="iLab.png"
+
+        mail_content['Subject'] = subject
+        mail_content['Data'] = content
+
+        return mail_content
+
+    def send_mail(self,data):
+        mail_content = self.build_json(data)
+        self.mail.send_mail(mail_content)
+
+
