@@ -3,7 +3,7 @@ __author__ = 'zhang11'
 from Handler import Handler
 from Middle.Conf_Parser import Conf_Paser
 from Middle.SysLog import SysLogger
-import Check_remote
+from CheckRemote import CheckRemote
 import re
 import json
 
@@ -17,8 +17,8 @@ class Net():
 
     def __init__(self):
         config=CFG.getSection('Middle')
-        self.MQ_Host = config['MQ_HOST']
-        self.check = Check_remote(self.MQ_Host)
+        self.MQ_Host = config['mq_host']
+        self.check = CheckRemote(self.MQ_Host)
 
 
     def analysis(self,message):

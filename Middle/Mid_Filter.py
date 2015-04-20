@@ -39,7 +39,6 @@ class Filter(object):
                 pass
             if 'net' in filters:
                 self.net = eval('NET.Net')()
-                logger.info(self.net.QUEUE_NAME) 
         except:
             raise Exception("get filters failed")
 
